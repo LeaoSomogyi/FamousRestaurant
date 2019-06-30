@@ -8,25 +8,54 @@ using System.Threading.Tasks;
 namespace FamousRestaurant.API.Controllers
 {
     [ApiController]
-    [Route("api/restaurant")]
-    public class RestaurantController : ControllerBase
+    [Route("api/user")]
+    public class UserController : ControllerBase
     {
-        private readonly IRepository<Models.Restaurant> _repository;
+        private readonly IRepository<Models.User> _repository;
 
-        public RestaurantController(IRepository<Models.Restaurant> repository)
+        public UserController(IRepository<Models.User> repository)
         {
             _repository = repository;
         }
 
         [HttpPost]
         [Route("")]
-        public IActionResult Save([FromBody]DTO.Restaurant restaurant)
+        public IActionResult Save([FromBody]DTO.User user)
         {
             try
             {
-                Models.Restaurant result = _repository.Save(new Models.Restaurant(restaurant));
+                Models.User result = _repository.Save(new Models.User(user));
 
-                return Ok(new DTO.Restaurant(result));
+                return Ok(new DTO.User(result));
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex);
+            }
+            catch (Exception ex)
+            {
+                return new UnprocessableEntityObjectResult(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login([FromBody]DTO.User user)
+        {
+            try
+            {
+                IEnumerable<Models.User> result = await _repository.SearchAsync(Models.User.RetrieveLoginExpression(user.Email, user.Password));
+
+                if (result.Count() == decimal.Zero)
+                {
+                    return new UnauthorizedObjectResult("Usuário ou senha incorretos.");
+                }
+                else
+                {
+                    DTO.User dto = new DTO.User(result.FirstOrDefault());
+
+                    return Ok(dto);
+                }
             }
             catch (ArgumentException ex)
             {
@@ -44,9 +73,9 @@ namespace FamousRestaurant.API.Controllers
         {
             try
             {
-                IEnumerable<Models.Restaurant> result = await _repository.GetAllAsync();
+                IEnumerable<Models.User> result = await _repository.GetAllAsync();
 
-                List<DTO.Restaurant> dtos = result.Select(r => new DTO.Restaurant(r)).ToList();
+                List<DTO.User> dtos = result.Select(u => new DTO.User(u)).ToList();
 
                 return Ok(dtos);
             }
@@ -60,13 +89,13 @@ namespace FamousRestaurant.API.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpPut]
         [Route("")]
-        public IActionResult Remove([FromBody]DTO.Restaurant restaurant)
+        public IActionResult Update([FromBody]DTO.User user)
         {
             try
             {
-                _repository.Remove(new Models.Restaurant(restaurant));
+                _repository.Update(new Models.User(user));
 
                 return Ok();
             }
@@ -80,13 +109,13 @@ namespace FamousRestaurant.API.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpDelete]
         [Route("")]
-        public IActionResult Update([FromBody]DTO.Restaurant restaurant)
+        public IActionResult Remove([FromBody]DTO.User user)
         {
             try
             {
-                _repository.Update(new Models.Restaurant(restaurant));
+                _repository.Remove(new Models.User(user, true));
 
                 return Ok();
             }

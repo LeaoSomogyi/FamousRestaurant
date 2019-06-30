@@ -19,7 +19,7 @@ namespace FamousRestaurant.API.Repositories
 
         #region "  IRepository<T>  "
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _unitOfWork.Context.Set<T>().ToListAsync();
         }
@@ -48,9 +48,14 @@ namespace FamousRestaurant.API.Repositories
             }            
         }
 
-        public async Task<IEnumerable<T>> Search(Expression<Func<T, bool>> expression)
+        public async Task<IEnumerable<T>> SearchAsync(Expression<Func<T, bool>> expression)
         {
             return await _unitOfWork.Context.Set<T>().Where(expression).ToListAsync();
+        }
+
+        public void Update(T entity)
+        {
+            _unitOfWork.Context.Entry(entity).State = EntityState.Modified;
         }
 
         #endregion

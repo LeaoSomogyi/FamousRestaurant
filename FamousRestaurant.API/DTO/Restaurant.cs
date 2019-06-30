@@ -41,8 +41,10 @@ namespace FamousRestaurant.API.DTO
 
         public Restaurant() { }
 
-        public Restaurant(Model.Restaurant restaurant)
+        public Restaurant(Models.Restaurant restaurant)
         {
+            if (restaurant == null) return;
+
             Id = restaurant.Id;
             Name = restaurant.Name;
             Phone = restaurant.Phone;

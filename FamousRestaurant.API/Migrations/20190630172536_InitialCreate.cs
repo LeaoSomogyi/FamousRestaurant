@@ -28,16 +28,38 @@ namespace FamousRestaurant.API.Migrations
                     table.PrimaryKey("PK_TBRestaurant", x => x.Id);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TBUser",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Name_User = table.Column<string>(type: "VARCHAR(128)", nullable: false),
+                    Email_User = table.Column<string>(type: "VARCHAR(256)", nullable: false),
+                    Password_User = table.Column<string>(type: "VARCHAR(512)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TBUser", x => x.Id);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_TBRestaurant_Zipcode_Restaurant_Name_Restaurant_Street_Restaurant_District_Restaurant_City_Restaurant_State_Restaurant",
                 table: "TBRestaurant",
                 columns: new[] { "Zipcode_Restaurant", "Name_Restaurant", "Street_Restaurant", "District_Restaurant", "City_Restaurant", "State_Restaurant" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TBUser_Email_User_Password_User_Name_User_Id",
+                table: "TBUser",
+                columns: new[] { "Email_User", "Password_User", "Name_User", "Id" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "TBRestaurant");
+
+            migrationBuilder.DropTable(
+                name: "TBUser");
         }
     }
 }

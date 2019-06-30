@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FamousRestaurant.API.Migrations
 {
-    [DbContext(typeof(RestaurantContext))]
-    [Migration("20190630020933_InitialCreate")]
+    [DbContext(typeof(ApplicationContext))]
+    [Migration("20190630172536_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace FamousRestaurant.API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("FamousRestaurant.API.Model.Restaurant", b =>
+            modelBuilder.Entity("FamousRestaurant.API.Models.Restaurant", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -79,6 +79,33 @@ namespace FamousRestaurant.API.Migrations
                     b.HasIndex("Zipcode", "Name", "Street", "District", "City", "State");
 
                     b.ToTable("TBRestaurant");
+                });
+
+            modelBuilder.Entity("FamousRestaurant.API.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnName("Email_User")
+                        .HasColumnType("VARCHAR(256)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnName("Name_User")
+                        .HasColumnType("VARCHAR(128)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnName("Password_User")
+                        .HasColumnType("VARCHAR(512)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email", "Password", "Name", "Id");
+
+                    b.ToTable("TBUser");
                 });
 #pragma warning restore 612, 618
         }

@@ -41,14 +41,14 @@ namespace FamousRestaurant.API
                     opt.SerializerSettings.TypeNameHandling = TypeNameHandling.None;
                 });
 
-            services.AddEntityFrameworkSqlServer().AddDbContext<RestaurantContext>(options =>
+            services.AddEntityFrameworkSqlServer().AddDbContext<ApplicationContext>(options =>
             {
                 options.UseSqlServer(Configuration["ConnectionString"],
                     sqlOptions => sqlOptions.MigrationsAssembly(typeof(Startup)
                     .GetTypeInfo().Assembly.GetName().Name));
-            });
+            });            
 
-            services.AddScoped(typeof(DbContext), typeof(RestaurantContext));
+            services.AddScoped(typeof(DbContext), typeof(ApplicationContext));
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));            
         }
@@ -71,9 +71,9 @@ namespace FamousRestaurant.API
 
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                var context = serviceScope.ServiceProvider.GetRequiredService<RestaurantContext>();
-                context.Database.Migrate();
-            }
+                var context = serviceScope.ServiceProvider.GetRequiredService<DbContext>();
+                context.Database.Migrate();                
+            }           
         }
     }
 }

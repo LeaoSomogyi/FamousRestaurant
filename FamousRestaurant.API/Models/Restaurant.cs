@@ -1,8 +1,9 @@
-﻿using System;
+﻿using FamousRestaurant.API.Contracts;
+using System;
 
-namespace FamousRestaurant.API.Model
+namespace FamousRestaurant.API.Models
 {
-    public class Restaurant
+    public class Restaurant : IEntity, IIsValid
     {
         public Guid Id { get; set; }
 
@@ -31,9 +32,13 @@ namespace FamousRestaurant.API.Model
         public Restaurant(DTO.Restaurant restaurant)
         {
             if (restaurant.Id.Equals(Guid.Empty))
+            {
                 Id = Guid.NewGuid();
+            }
             else
+            {
                 Id = restaurant.Id;
+            }
 
             Name = restaurant.Name;
             Phone = restaurant.Phone;
@@ -52,22 +57,34 @@ namespace FamousRestaurant.API.Model
         public bool IsValid()
         {
             if (string.IsNullOrEmpty(Name))
+            {
                 throw new ArgumentException("Por favor, envie o nome do restaurante.");
+            }
 
             if (string.IsNullOrEmpty(Zipcode))
+            {
                 throw new ArgumentException("Por favor, envie o CEP do restaurante.");
+            }
 
             if (string.IsNullOrEmpty(Street))
+            {
                 throw new ArgumentException("Por favor, envie o logradouro do restaurante.");
+            }
 
             if (string.IsNullOrEmpty(City))
+            {
                 throw new ArgumentException("Por favor, envie a cidade do restaurante.");
+            }
 
             if (string.IsNullOrEmpty(District))
+            {
                 throw new ArgumentException("Por favor, envie o bairo do restaurante.");
+            }
 
             if (string.IsNullOrEmpty(State))
+            {
                 throw new ArgumentException("Por favor, envie o estado do restaurante.");
+            }
 
             return true;
         }
