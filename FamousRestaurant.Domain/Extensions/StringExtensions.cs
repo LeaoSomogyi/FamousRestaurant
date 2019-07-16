@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace FamousRestaurant.API.Extensions
+namespace FamousRestaurant.Domain.Extensions
 {
     public static class StringExtensions
     {

@@ -1,4 +1,4 @@
-﻿using FamousRestaurant.API.Models;
+﻿using FamousRestaurant.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

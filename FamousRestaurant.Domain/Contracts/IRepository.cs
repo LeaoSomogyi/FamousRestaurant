@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace FamousRestaurant.API.Contracts
+namespace FamousRestaurant.Domain.Contracts
 {
     public interface IRepository<T> where T : class
     {

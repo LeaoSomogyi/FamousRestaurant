@@ -1,5 +1,4 @@
-﻿using FamousRestaurant.API.Contracts;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace FamousRestaurant.API.Units

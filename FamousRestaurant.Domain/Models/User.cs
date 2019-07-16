@@ -1,9 +1,9 @@
-﻿using FamousRestaurant.API.Contracts;
-using FamousRestaurant.API.Extensions;
+﻿using FamousRestaurant.Domain.Contracts;
+using FamousRestaurant.Domain.Extensions;
 using System;
 using System.Linq.Expressions;
 
-namespace FamousRestaurant.API.Models
+namespace FamousRestaurant.Domain.Models
 {
     public class User : IEntity, IIsValid
     {

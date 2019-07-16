@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace FamousRestaurant.API.DTO
+namespace FamousRestaurant.Domain.DTO
 {
     [JsonObject("user")]
     public class User

@@ -1,9 +1,11 @@
-﻿using FamousRestaurant.API.Contracts;
+﻿using FamousRestaurant.Domain.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DTO = FamousRestaurant.Domain.DTO;
+using Models = FamousRestaurant.Domain.Models;
 
 namespace FamousRestaurant.API.Controllers
 {

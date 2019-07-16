@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FamousRestaurant.API.Contracts
+namespace FamousRestaurant.Domain.Contracts
 {
     public interface IEntity
     {

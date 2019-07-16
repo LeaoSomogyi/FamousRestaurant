@@ -1,5 +1,5 @@
 ﻿using FamousRestaurant.API.EFConfigurations;
-using FamousRestaurant.API.Models;
+using FamousRestaurant.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace FamousRestaurant.API.DataContext

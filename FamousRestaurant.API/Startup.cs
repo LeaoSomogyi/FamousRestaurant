@@ -1,4 +1,4 @@
-﻿using FamousRestaurant.API.Contracts;
+﻿using FamousRestaurant.Domain.Contracts;
 using FamousRestaurant.API.DataContext;
 using FamousRestaurant.API.Repositories;
 using FamousRestaurant.API.Units;

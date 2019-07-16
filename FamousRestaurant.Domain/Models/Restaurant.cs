@@ -1,7 +1,7 @@
-﻿using FamousRestaurant.API.Contracts;
+﻿using FamousRestaurant.Domain.Contracts;
 using System;
 
-namespace FamousRestaurant.API.Models
+namespace FamousRestaurant.Domain.Models
 {
     public class Restaurant : IEntity, IIsValid
     {

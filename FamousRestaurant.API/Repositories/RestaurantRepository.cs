@@ -1,5 +1,5 @@
-﻿using FamousRestaurant.API.Contracts;
-using FamousRestaurant.API.Models;
+﻿using FamousRestaurant.API.Units;
+using FamousRestaurant.Domain.Models;
 
 namespace FamousRestaurant.API.Repositories
 {
