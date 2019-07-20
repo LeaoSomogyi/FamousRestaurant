@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FamousRestaurant.Domain.Contracts
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T> : IDisposable where T : class
     {
         /// <summary>
         /// Async method to list all data

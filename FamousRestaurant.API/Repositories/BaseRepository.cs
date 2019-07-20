@@ -18,6 +18,16 @@ namespace FamousRestaurant.API.Repositories
             _unitOfWork = unitOfWork;
         }
 
+        #region "  IDisposable  "
+
+        public void Dispose()
+        {
+            _unitOfWork.Commit();
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
+
         #region "  IRepository<T>  "
 
         public async Task<IEnumerable<T>> GetAllAsync()

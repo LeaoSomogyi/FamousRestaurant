@@ -1,8 +1,5 @@
-﻿using FamousRestaurant.API.DataContext;
-using FamousRestaurant.API.Repositories;
-using FamousRestaurant.API.Units;
+﻿using FamousRestaurant.Domain.Contracts;
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,17 +8,9 @@ using Models = FamousRestaurant.Domain.Models;
 
 namespace FamousRestaurant.Test
 {
-    public class UserRepositoryTest
+    public class UserRepositoryTest : BaseRepositoryTest
     {
-        private readonly SqliteConnection sqliteConnection = new SqliteConnection("DataSource=:memory:");
-        private readonly DbContextOptions<ApplicationContext> dbContextOptions;
-
-        public UserRepositoryTest()
-        {
-            dbContextOptions = new DbContextOptionsBuilder<ApplicationContext>()
-                .UseSqlite(sqliteConnection)
-                .Options;
-        }
+        public UserRepositoryTest() : base() { }
 
         #region "  Ok  "
 
@@ -31,19 +20,12 @@ namespace FamousRestaurant.Test
             try
             {
                 //Add memory database
-                sqliteConnection.Open();
+                SqliteConnection.Open();
 
-                using (ApplicationContext context = new ApplicationContext(dbContextOptions))
+                //After repository was disposed, the changes are commited
+                using (IRepository<Models.User> repository = GetRepository<Models.User>())
                 {
-                    //Create schema in database
-                    context.Database.EnsureCreated();
-
-                    //Create UnitOfWork with memory database context
-                    UnitOfWork unitOfWork = new UnitOfWork(context);
-
-                    //Create User repository
-                    UserRepository repository = new UserRepository(unitOfWork);
-
+                    //Arrange
                     Models.User user = new Models.User()
                     {
                         Email = "testing@gmail.com",
@@ -54,20 +36,11 @@ namespace FamousRestaurant.Test
 
                     //Insert user on database
                     repository.Save(user);
-
-                    //Dispose UnitOfWork to commit changes
-                    unitOfWork.Dispose();
                 }
 
-                //Using another instance of context to make sure previous data was saved
-                using (ApplicationContext context = new ApplicationContext(dbContextOptions))
+                //Using another instance of repository to make sure previous data was saved
+                using (IRepository<Models.User> repository = GetRepository<Models.User>())
                 {
-                    //Create UnitOfWork with memory database context
-                    UnitOfWork unitOfWork = new UnitOfWork(context);
-
-                    //Create User repository
-                    UserRepository repository = new UserRepository(unitOfWork);
-
                     IEnumerable<Models.User> users = await repository.GetAllAsync();
 
                     //Assert
@@ -77,7 +50,78 @@ namespace FamousRestaurant.Test
             }
             finally
             {
-                sqliteConnection.Close();
+                //release memory database
+                SqliteConnection.Close();
+            }
+        }
+
+        [Fact]
+        public async void Get_All_Users_Ok()
+        {
+            try
+            {
+                SqliteConnection.Open();
+
+                //After repository was disposed, the changes are commited
+                using (IRepository<Models.User> repository = GetRepository<Models.User>())
+                {
+                    //Arrange
+                    List<Models.User> users = new List<Models.User>()
+                    {
+                        new Models.User()
+                        {
+                            Email = "testing@gmail.com",
+                            Password = "12345678@..",
+                            Name = "Test User",
+                            Id = Guid.NewGuid()
+                        },
+                        new Models.User()
+                        {
+                            Email = "testing@hotmail.com",
+                            Password = "123456@..",
+                            Name = "Another User",
+                            Id = Guid.NewGuid()
+                        },
+                        new Models.User()
+                        {
+                            Email = "testing2@gmail.com",
+                            Password = "T3st@..",
+                            Name = "Test2 User",
+                            Id = Guid.NewGuid()
+                        },
+                        new Models.User()
+                        {
+                            Email = "testing3@gmail.com",
+                            Password = "87654321@..",
+                            Name = "Test3 User",
+                            Id = Guid.NewGuid()
+                        },
+                    };
+
+                    users.ForEach(user =>
+                    {
+                        //Insert user on database
+                        repository.Save(user);
+                    });
+                }
+
+                //Using another instance of repository to make sure previous data was saved
+                using (IRepository<Models.User> repository = GetRepository<Models.User>())
+                {
+                    IEnumerable<Models.User> users = await repository.GetAllAsync();
+
+                    //Assert
+                    Assert.True(users.Count() == 4);
+
+                    //Check if Primary keys not repeat (expected one user for each key)
+                    var checks = users.GroupBy(u => u.Id).Select(group => group.Count() == 1);
+
+                    Assert.True(checks.All(c => c == true)); 
+                }
+            }
+            finally
+            {
+                SqliteConnection.Close();
             }
         }
 
@@ -90,19 +134,12 @@ namespace FamousRestaurant.Test
         {
             try
             {
-                sqliteConnection.Open();
+                //Add memory database
+                SqliteConnection.Open();
 
-                using (ApplicationContext context = new ApplicationContext(dbContextOptions))
+                //After repository was disposed, the changes are commited
+                using (IRepository<Models.User> repository = GetRepository<Models.User>())
                 {
-                    //Create schema in database
-                    context.Database.EnsureCreated();
-
-                    //Create UnitOfWork with memory database context
-                    UnitOfWork unitOfWork = new UnitOfWork(context);
-
-                    //Create User repository
-                    UserRepository repository = new UserRepository(unitOfWork);
-
                     Models.User user = new Models.User()
                     {
                         Email = "testing@gmail.com",
@@ -113,33 +150,25 @@ namespace FamousRestaurant.Test
 
                     //Insert user on database
                     repository.Save(user);
-
-                    //Dispose UnitOfWork to commit changes
-                    unitOfWork.Dispose();
                 }
 
-                //Using another instance of context to make sure previous data was saved
-                using (ApplicationContext context = new ApplicationContext(dbContextOptions))
+                //Using another instance of repository to make sure previous data was saved
+                using (IRepository<Models.User> repository = GetRepository<Models.User>())
                 {
-                    //Create UnitOfWork with memory database context
-                    UnitOfWork unitOfWork = new UnitOfWork(context);
-
-                    //Create User repository
-                    UserRepository repository = new UserRepository(unitOfWork);
-
                     //Arrange
                     string email = "testing@gmail.com";
                     string password = "123456";
 
-                    var users = await repository.SearchAsync(u => u.Email.Equals(email) && u.Password.Equals(password));
+                    IEnumerable<Models.User> users = await repository.SearchAsync(u => u.Email.Equals(email) && u.Password.Equals(password));
 
                     //Assert
-                    Assert.True(users.Count() == 0);                    
+                    Assert.True(users.Count() == 0);
                 }
             }
             finally
             {
-                sqliteConnection.Close();
+                //release memory database
+                SqliteConnection.Close();
             }
         }
 
