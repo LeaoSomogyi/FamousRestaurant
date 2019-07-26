@@ -7,14 +7,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FamousRestaurant.Test
 {
-    public class BaseRepositoryTest
+    public abstract class BaseTest
     {
         /// <summary>
         /// SQLite Connection to use in all test classes
         /// </summary>
-        public readonly SqliteConnection SqliteConnection;
+        protected readonly SqliteConnection SqliteConnection;
 
-        public BaseRepositoryTest()
+        /// <summary>
+        /// Unit Of Work using SQLite DbContext
+        /// </summary>
+        protected IUnitOfWork UnitOfWork
+        {
+            get
+            {
+                return RetrieveUnitOfWork();
+            }
+        }
+
+        /// <summary>
+        /// Default constructor setting SQLite Connection
+        /// </summary>
+        public BaseTest()
         {
             SqliteConnection = new SqliteConnection("DataSource=:memory:");
         }
@@ -25,6 +39,15 @@ namespace FamousRestaurant.Test
         /// <typeparam name="T">Model class</typeparam>
         /// <returns>The typed repository of the model</returns>
         public IRepository<T> GetRepository<T>() where T : class
+        {
+            //Create UnitOfWork with memory database context
+            IUnitOfWork unitOfWork = RetrieveUnitOfWork();
+
+            //return typed repository
+            return new BaseRepository<T>(unitOfWork);
+        }
+
+        private IUnitOfWork RetrieveUnitOfWork()
         {
             //Set DbContext options to use SQLite
             var dbContextOptions = new DbContextOptionsBuilder<ApplicationContext>()
@@ -37,11 +60,7 @@ namespace FamousRestaurant.Test
             //Create schema in database
             context.Database.EnsureCreated();
 
-            //Create UnitOfWork with memory database context
-            IUnitOfWork unitOfWork = new UnitOfWork(context);
-
-            //return typed repository
-            return new BaseRepository<T>(unitOfWork);
+            return new UnitOfWork(context);
         }
     }
 }
