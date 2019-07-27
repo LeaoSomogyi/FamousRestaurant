@@ -43,6 +43,17 @@ namespace FamousRestaurant.Domain.Models
             }            
         }
 
+        /// <summary>
+        /// Constructor to use on login
+        /// </summary>
+        /// <param name="email">User e-mail</param>
+        /// <param name="password">User password</param>
+        public User(string email, string password)
+        {
+            Email = email;
+            Password = password.Cript();
+        }
+
         public bool IsValid()
         {
             if (string.IsNullOrEmpty(Name))
@@ -74,6 +85,16 @@ namespace FamousRestaurant.Domain.Models
             string cript = password.Cript();
 
             return u => u.Email.Equals(email) && u.Password.Equals(cript);
+        }
+
+        /// <summary>
+        /// Method used to retrieve where expression to pass as conditional on Search
+        /// </summary>
+        /// <param name="user">User intent to login</param>
+        /// <returns>A expression to use on Where clause</returns>
+        public static Expression<Func<User, bool>> RetrieveLoginExpression(User user)
+        {
+            return u => u.Email.Equals(user.Email) && u.Password.Equals(user.Password);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using FamousRestaurant.Domain.Extensions;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FamousRestaurant.API.Migrations
@@ -51,6 +52,12 @@ namespace FamousRestaurant.API.Migrations
                 name: "IX_TBUser_Email_User_Password_User_Name_User_Id",
                 table: "TBUser",
                 columns: new[] { "Email_User", "Password_User", "Name_User", "Id" });
+
+            //initial admin user seed
+            migrationBuilder.InsertData(
+                table: "TBUser",
+                columns: new[] { "Id", "Name_User", "Email_User", "Password_User" },
+                values: new object[] { Guid.NewGuid(), "Felipe Somogyi", "leaosomogyi@hotmail.com", "12345678".Cript() });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

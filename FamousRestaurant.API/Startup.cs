@@ -10,6 +10,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System.Reflection;
+using FamousRestaurant.Domain.Configurations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System;
+using Microsoft.AspNetCore.Authorization;
+using FamousRestaurant.Domain.Services;
+using Newtonsoft.Json.Serialization;
 
 namespace FamousRestaurant.API
 {
@@ -28,7 +34,12 @@ namespace FamousRestaurant.API
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(opt =>
-                {                    
+                {
+                    opt.SerializerSettings.ContractResolver = new DefaultContractResolver
+                    {
+                        NamingStrategy = new SnakeCaseNamingStrategy()
+                    };
+
                     opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                     opt.SerializerSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
                     opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
@@ -43,14 +54,46 @@ namespace FamousRestaurant.API
 
             services.AddEntityFrameworkSqlServer().AddDbContext<ApplicationContext>(options =>
             {
-                options.UseSqlServer(Configuration["ConnectionString"],
+                options.UseSqlServer(Configuration["ConnectionStrings:ConnectionString"],
                     sqlOptions => sqlOptions.MigrationsAssembly(typeof(Startup)
                     .GetTypeInfo().Assembly.GetName().Name));
             });            
 
             services.AddScoped(typeof(DbContext), typeof(ApplicationContext));
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
-            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));            
+            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+            services.AddScoped(typeof(ILoginService), typeof(LoginService));
+
+            var tokenConfig = new TokenConfigurations();
+            Configuration.Bind("TokenConfigurations", tokenConfig);
+
+            var signingConfigurations = new SigningConfigurations();
+
+            services.AddSingleton(tokenConfig);
+            services.AddSingleton(signingConfigurations);
+
+            services.AddAuthentication(authOptions =>
+            {
+                authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                authOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(bearerOptions =>
+            {
+                var paramsValidation = bearerOptions.TokenValidationParameters;
+                paramsValidation.IssuerSigningKey = signingConfigurations.SecurityKey;
+                paramsValidation.ValidateIssuer = false;
+                paramsValidation.ValidateAudience = false;
+                paramsValidation.ValidateIssuerSigningKey = true;
+                paramsValidation.ValidateLifetime = true;
+                paramsValidation.ClockSkew = TimeSpan.Zero;
+            });
+
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser().Build());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +110,7 @@ namespace FamousRestaurant.API
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
 
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())

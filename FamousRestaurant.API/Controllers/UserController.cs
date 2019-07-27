@@ -1,4 +1,5 @@
 ﻿using FamousRestaurant.Domain.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace FamousRestaurant.API.Controllers
         }
 
         [HttpPost]
+        [Authorize("Bearer")]
         [Route("")]
         public IActionResult Save([FromBody]DTO.User user)
         {
@@ -39,38 +41,10 @@ namespace FamousRestaurant.API.Controllers
             {
                 return new UnprocessableEntityObjectResult(ex.Message);
             }
-        }
-
-        [HttpPost]
-        [Route("login")]
-        public async Task<IActionResult> Login([FromBody]DTO.User user)
-        {
-            try
-            {
-                IEnumerable<Models.User> result = await _repository.SearchAsync(Models.User.RetrieveLoginExpression(user.Email, user.Password));
-
-                if (result.Count() == decimal.Zero)
-                {
-                    return new UnauthorizedObjectResult("Usuário ou senha incorretos.");
-                }
-                else
-                {
-                    DTO.User dto = new DTO.User(result.FirstOrDefault());
-
-                    return Ok(dto);
-                }
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex);
-            }
-            catch (Exception ex)
-            {
-                return new UnprocessableEntityObjectResult(ex.Message);
-            }
-        }
+        }       
 
         [HttpGet]
+        [Authorize("Bearer")]
         [Route("")]
         public async Task<IActionResult> GetAll()
         {
@@ -93,6 +67,7 @@ namespace FamousRestaurant.API.Controllers
         }
 
         [HttpPut]
+        [Authorize("Bearer")]
         [Route("")]
         public IActionResult Update([FromBody]DTO.User user)
         {
@@ -113,6 +88,7 @@ namespace FamousRestaurant.API.Controllers
         }
 
         [HttpDelete]
+        [Authorize("Bearer")]
         [Route("")]
         public IActionResult Remove([FromBody]DTO.User user)
         {

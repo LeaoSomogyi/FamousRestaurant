@@ -1,4 +1,5 @@
 ﻿using FamousRestaurant.Domain.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace FamousRestaurant.API.Controllers
         }
 
         [HttpPost]
+        [Authorize("Bearer")]
         [Route("")]
         public IActionResult Save([FromBody]DTO.Restaurant restaurant)
         {
@@ -41,6 +43,7 @@ namespace FamousRestaurant.API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("")]
         public async Task<IActionResult> GetAll()
         {
@@ -63,6 +66,7 @@ namespace FamousRestaurant.API.Controllers
         }
 
         [HttpDelete]
+        [Authorize("Bearer")]
         [Route("")]
         public IActionResult Remove([FromBody]DTO.Restaurant restaurant)
         {
@@ -83,6 +87,7 @@ namespace FamousRestaurant.API.Controllers
         }
 
         [HttpPut]
+        [AllowAnonymous]
         [Route("")]
         public IActionResult Update([FromBody]DTO.Restaurant restaurant)
         {
