@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using DTO = FamousRestaurant.Domain.DTO;
 using Models = FamousRestaurant.Domain.Models;
 
-
 namespace FamousRestaurant.API.Controllers
 {
     [ApiController]

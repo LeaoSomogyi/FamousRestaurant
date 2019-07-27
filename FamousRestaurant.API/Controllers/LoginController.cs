@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FamousRestaurant.Domain.Contracts;
+﻿using FamousRestaurant.Domain.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 using DTO = FamousRestaurant.Domain.DTO;
 using Model = FamousRestaurant.Domain.Models;
 
@@ -28,7 +26,7 @@ namespace FamousRestaurant.API.Controllers
         {
             try
             {
-                var token = await _loginService.DoLogin(new Model.User(user.Email, user.Password));
+                Model.Token token = await _loginService.DoLogin(new Model.User(user.Email, user.Password));
 
                 if (token == null)
                     return Unauthorized();

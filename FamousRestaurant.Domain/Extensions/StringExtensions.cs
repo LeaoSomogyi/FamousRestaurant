@@ -6,6 +6,11 @@ namespace FamousRestaurant.Domain.Extensions
 {
     public static class StringExtensions
     {
+        /// <summary>
+        /// Encript string using hashbytes
+        /// </summary>
+        /// <param name="password">Paasword not cripted</param>
+        /// <returns>The password cript in hashbytes</returns>
         public static string Cript(this string password)
         {
             UnicodeEncoding encoding = new UnicodeEncoding();
