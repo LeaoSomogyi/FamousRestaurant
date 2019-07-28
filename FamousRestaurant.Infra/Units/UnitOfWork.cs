@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FamousRestaurant.Infra.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace FamousRestaurant.API.Units
+namespace FamousRestaurant.Infra.Units
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {

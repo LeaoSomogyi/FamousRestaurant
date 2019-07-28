@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace FamousRestaurant.API.EFConfigurations
+namespace FamousRestaurant.Infra.EFConfigurations
 {
     public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
     {

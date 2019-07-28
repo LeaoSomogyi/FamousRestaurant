@@ -7,12 +7,24 @@ namespace FamousRestaurant.Domain.Models
 {
     public class User : IEntity, IIsValid
     {
+        /// <summary>
+        /// User unique identifier
+        /// </summary>
         public Guid Id { get; set; }
 
+        /// <summary>
+        /// User name
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// User e-mail
+        /// </summary>
         public string Email { get; set; }
 
+        /// <summary>
+        /// User password. This will be encrypted when save on database
+        /// </summary>
         public string Password { get; set; }
 
         public User() { }

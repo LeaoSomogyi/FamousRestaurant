@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace FamousRestaurant.API.Units
+namespace FamousRestaurant.Infra.Contracts
 {
     public interface IUnitOfWork
     {

@@ -1,7 +1,8 @@
 ﻿using FamousRestaurant.Domain.Contracts;
-using FamousRestaurant.API.DataContext;
-using FamousRestaurant.API.Repositories;
-using FamousRestaurant.API.Units;
+using FamousRestaurant.Infra.DataContext;
+using FamousRestaurant.Infra.Repositories;
+using FamousRestaurant.Infra.Contracts;
+using FamousRestaurant.Infra.Units;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

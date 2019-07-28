@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\FamousRestaurant.API\FamousRestaurant.API.csproj" />
     <ProjectReference Include="..\FamousRestaurant.Domain\FamousRestaurant.Domain.csproj" />
+    <ProjectReference Include="..\FamousRestaurant.Infra\FamousRestaurant.Infra.csproj" />
   </ItemGroup>
 
   <ItemGroup>

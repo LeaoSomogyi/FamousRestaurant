@@ -1,7 +1,8 @@
-﻿using FamousRestaurant.API.DataContext;
-using FamousRestaurant.API.Repositories;
-using FamousRestaurant.API.Units;
-using FamousRestaurant.Domain.Contracts;
+﻿using FamousRestaurant.Domain.Contracts;
+using FamousRestaurant.Infra.Contracts;
+using FamousRestaurant.Infra.DataContext;
+using FamousRestaurant.Infra.Repositories;
+using FamousRestaurant.Infra.Units;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
@@ -47,10 +48,14 @@ namespace FamousRestaurant.Test
             return new BaseRepository<T>(unitOfWork);
         }
 
+        /// <summary>
+        /// Method to create a instance of UnitOfWork with SQLite context
+        /// </summary>
+        /// <returns>Instance of IUnitOfWork</returns>
         private IUnitOfWork RetrieveUnitOfWork()
         {
             //Set DbContext options to use SQLite
-            var dbContextOptions = new DbContextOptionsBuilder<ApplicationContext>()
+            DbContextOptions<ApplicationContext> dbContextOptions = new DbContextOptionsBuilder<ApplicationContext>()
                 .UseSqlite(SqliteConnection)
                 .Options;
 

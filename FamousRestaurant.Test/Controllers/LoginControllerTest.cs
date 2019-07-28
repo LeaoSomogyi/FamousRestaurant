@@ -3,7 +3,6 @@ using FamousRestaurant.Domain.Configurations;
 using FamousRestaurant.Domain.Contracts;
 using FamousRestaurant.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using Xunit;
 using DTO = FamousRestaurant.Domain.DTO;
 using Model = FamousRestaurant.Domain.Models;

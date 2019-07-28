@@ -1,7 +1,7 @@
-﻿using FamousRestaurant.API.Units;
+﻿using FamousRestaurant.Infra.Contracts;
 using FamousRestaurant.Domain.Models;
 
-namespace FamousRestaurant.API.Repositories
+namespace FamousRestaurant.Infra.Repositories
 {
     public class RestaurantRepository : BaseRepository<Restaurant>
     {

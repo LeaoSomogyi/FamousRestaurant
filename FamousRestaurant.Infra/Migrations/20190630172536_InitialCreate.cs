@@ -2,7 +2,7 @@
 using FamousRestaurant.Domain.Extensions;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace FamousRestaurant.API.Migrations
+namespace FamousRestaurant.Infra.Migrations
 {
     public partial class InitialCreate : Migration
     {

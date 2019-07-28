@@ -5,26 +5,59 @@ namespace FamousRestaurant.Domain.Models
 {
     public class Restaurant : IEntity, IIsValid
     {
+        /// <summary>
+        /// Restaurant unique identifier
+        /// </summary>
         public Guid Id { get; set; }
 
+        /// <summary>
+        /// Restaurant name
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Restaurant phone
+        /// </summary>
         public string Phone { get; set; }
 
+        /// <summary>
+        /// Restaurant zipcode
+        /// </summary>
         public string Zipcode { get; set; }
 
+        /// <summary>
+        /// Restaurant address street
+        /// </summary>
         public string Street { get; set; }
 
+        /// <summary>
+        /// Restaurant address number
+        /// </summary>
         public int? Number { get; set; }
 
+        /// <summary>
+        /// Restaurant address complement
+        /// </summary>
         public string Complement { get; set; }
 
+        /// <summary>
+        /// Restaurant address district
+        /// </summary>
         public string District { get; set; }
 
+        /// <summary>
+        /// Restaurant address city
+        /// </summary>
         public string City { get; set; }
 
+        /// <summary>
+        /// Restaurant address state
+        /// </summary>
         public string State { get; set; }
 
+        /// <summary>
+        /// Restaurant stocking level (0 - empty/ 10 - full)
+        /// </summary>
         public int? StockingLevel { get; set; }
 
         public Restaurant() { }
@@ -78,7 +111,7 @@ namespace FamousRestaurant.Domain.Models
 
             if (string.IsNullOrEmpty(District))
             {
-                throw new ArgumentException("Por favor, envie o bairo do restaurante.");
+                throw new ArgumentException("Por favor, envie o bairro do restaurante.");
             }
 
             if (string.IsNullOrEmpty(State))

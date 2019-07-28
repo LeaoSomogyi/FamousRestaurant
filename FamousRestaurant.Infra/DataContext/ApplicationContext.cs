@@ -1,8 +1,8 @@
-﻿using FamousRestaurant.API.EFConfigurations;
+﻿using FamousRestaurant.Infra.EFConfigurations;
 using FamousRestaurant.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FamousRestaurant.API.DataContext
+namespace FamousRestaurant.Infra.DataContext
 {
     public class ApplicationContext : DbContext
     {

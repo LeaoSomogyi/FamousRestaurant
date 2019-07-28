@@ -1,4 +1,4 @@
-﻿using FamousRestaurant.API.Units;
+﻿using FamousRestaurant.Infra.Contracts;
 using FamousRestaurant.Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace FamousRestaurant.API.Repositories
+namespace FamousRestaurant.Infra.Repositories
 {
     public class BaseRepository<T> : IRepository<T> where T : class
     {
