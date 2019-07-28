@@ -14,9 +14,15 @@ namespace FamousRestaurant.Domain.Services
 {
     public class LoginService : ILoginService
     {
+        #region "  Repositories & Configs  "
+
         private readonly IRepository<User> _repository;
         private readonly TokenConfigurations _tokenConfigurations;
         private readonly SigningConfigurations _signingConfigurations;
+
+        #endregion
+
+        #region "  Constructors  "
 
         public LoginService(IRepository<User> repository, TokenConfigurations tokenConfigurations,
             SigningConfigurations signingConfigurations)
@@ -25,6 +31,10 @@ namespace FamousRestaurant.Domain.Services
             _tokenConfigurations = tokenConfigurations;
             _signingConfigurations = signingConfigurations;
         }
+
+        #endregion
+
+        #region "  ILoginService  "
 
         public async Task<Token> DoLogin(User user)
         {
@@ -72,5 +82,7 @@ namespace FamousRestaurant.Domain.Services
                 return null;
             }
         }
+
+        #endregion
     }
 }

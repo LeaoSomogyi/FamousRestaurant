@@ -8,7 +8,7 @@ using System.Linq;
 using Xunit;
 using Models = FamousRestaurant.Domain.Models;
 
-namespace FamousRestaurant.Test
+namespace FamousRestaurant.Test.Repositories
 {
     public class UserRepositoryTest : BaseTest
     {
@@ -27,17 +27,7 @@ namespace FamousRestaurant.Test
                 //After repository was disposed, the changes are commited
                 using (IRepository<Models.User> repository = GetRepository<Models.User>())
                 {
-                    //Arrange
-                    Models.User user = new Models.User()
-                    {
-                        Email = "testing@gmail.com",
-                        Password = "12345678@..".Cript(),
-                        Name = "Test User",
-                        Id = Guid.NewGuid()
-                    };
-
-                    //Insert user on database
-                    repository.Save(user);
+                    InsertUniqueUser(repository);
                 }
 
                 //Using another instance of repository to make sure previous data was saved
@@ -67,44 +57,7 @@ namespace FamousRestaurant.Test
                 //After repository was disposed, the changes are commited
                 using (IRepository<Models.User> repository = GetRepository<Models.User>())
                 {
-                    //Arrange
-                    List<Models.User> users = new List<Models.User>()
-                    {
-                        new Models.User()
-                        {
-                            Email = "testing@gmail.com",
-                            Password = "12345678@..".Cript(),
-                            Name = "Test User",
-                            Id = Guid.NewGuid()
-                        },
-                        new Models.User()
-                        {
-                            Email = "testing@hotmail.com",
-                            Password = "123456@..".Cript(),
-                            Name = "Another User",
-                            Id = Guid.NewGuid()
-                        },
-                        new Models.User()
-                        {
-                            Email = "testing2@gmail.com",
-                            Password = "T3st@..".Cript(),
-                            Name = "Test2 User",
-                            Id = Guid.NewGuid()
-                        },
-                        new Models.User()
-                        {
-                            Email = "testing3@gmail.com",
-                            Password = "87654321@..".Cript(),
-                            Name = "Test3 User",
-                            Id = Guid.NewGuid()
-                        },
-                    };
-
-                    users.ForEach(user =>
-                    {
-                        //Insert user on database
-                        repository.Save(user);
-                    });
+                    InsertMultipleUsers(repository);
                 }
 
                 //Using another instance of repository to make sure previous data was saved
@@ -137,17 +90,7 @@ namespace FamousRestaurant.Test
                 //After repository was disposed, the changes are commited
                 using (IRepository<Models.User> repository = GetRepository<Models.User>())
                 {
-                    //Arrange
-                    Models.User user = new Models.User()
-                    {
-                        Email = "testing@gmail.com",
-                        Password = "12345678@..".Cript(),
-                        Name = "Test User",
-                        Id = Guid.NewGuid()
-                    };
-
-                    //Insert user on database
-                    repository.Save(user);
+                    InsertUniqueUser(repository);
                 }
 
                 //Using another instance of repository to make sure previous data was saved
@@ -185,44 +128,7 @@ namespace FamousRestaurant.Test
                 //After repository was disposed, the changes are commited
                 using (IRepository<Models.User> repository = GetRepository<Models.User>())
                 {
-                    //Arrange
-                    List<Models.User> users = new List<Models.User>()
-                    {
-                        new Models.User()
-                        {
-                            Email = "testing@gmail.com",
-                            Password = "12345678@..".Cript(),
-                            Name = "Test",
-                            Id = Guid.NewGuid()
-                        },
-                        new Models.User()
-                        {
-                            Email = "testing@hotmail.com",
-                            Password = "123456@..".Cript(),
-                            Name = "Test",
-                            Id = Guid.NewGuid()
-                        },
-                        new Models.User()
-                        {
-                            Email = "testing2@gmail.com",
-                            Password = "T3st@..".Cript(),
-                            Name = "Test2 User",
-                            Id = Guid.NewGuid()
-                        },
-                        new Models.User()
-                        {
-                            Email = "testing3@gmail.com",
-                            Password = "87654321@..".Cript(),
-                            Name = "Test3 User",
-                            Id = Guid.NewGuid()
-                        },
-                    };
-
-                    users.ForEach(user =>
-                    {
-                        //Insert user on database
-                        repository.Save(user);
-                    });
+                    InsertMultipleUsers(repository);
                 }
 
                 //Using another instance of repository to make sure previous data was saved
@@ -251,17 +157,7 @@ namespace FamousRestaurant.Test
                 //After repository was disposed, the changes are commited
                 using (IRepository<Models.User> repository = GetRepository<Models.User>())
                 {
-                    //Arrange
-                    Models.User user = new Models.User()
-                    {
-                        Email = "testing@gmail.com",
-                        Password = "12345678@..".Cript(),
-                        Name = "Test User",
-                        Id = Guid.NewGuid()
-                    };
-
-                    //Insert user on database
-                    repository.Save(user);
+                    InsertUniqueUser(repository);
                 }
 
                 //Using another instance of repository to make sure previous data was saved
@@ -302,16 +198,7 @@ namespace FamousRestaurant.Test
                 //After repository was disposed, the changes are commited
                 using (IRepository<Models.User> repository = GetRepository<Models.User>())
                 {
-                    Models.User user = new Models.User()
-                    {
-                        Email = "testing@gmail.com",
-                        Password = "12345678@..".Cript(),
-                        Name = "Test User",
-                        Id = Guid.NewGuid()
-                    };
-
-                    //Insert user on database
-                    repository.Save(user);
+                    InsertUniqueUser(repository);
                 }
 
                 //Using another instance of repository to make sure previous data was saved
@@ -349,16 +236,7 @@ namespace FamousRestaurant.Test
                 //After repository was disposed, the changes are commited
                 using (IRepository<Models.User> repository = GetRepository<Models.User>())
                 {
-                    Models.User user = new Models.User()
-                    {
-                        Email = "testing@gmail.com",
-                        Password = "12345678@..".Cript(),
-                        Name = "Test User",
-                        Id = Guid.NewGuid()
-                    };
-
-                    //Insert user on database
-                    repository.Save(user);
+                    InsertUniqueUser(repository);
                 }
 
                 //Using another instance of repository to make sure previous data was saved
@@ -395,32 +273,7 @@ namespace FamousRestaurant.Test
                 {
                     using (IRepository<Models.User> repository = GetRepository<Models.User>())
                     {
-                        //try use same PK on both users (forcing exception)
-                        Guid code = Guid.NewGuid();
-
-                        //Arrange
-                        List<Models.User> users = new List<Models.User>()
-                        {
-                            new Models.User()
-                            {
-                                Id = code,
-                                Email = "testing@gmail.com",
-                                Password = "12345678".Cript(),
-                                Name = "First Test"
-                            },
-                            new Models.User()
-                            {
-                                Id = code,
-                                Email = "testing@hotmail.com",
-                                Password = "87654321".Cript(),
-                                Name = "Second Test"
-                            },
-                        };
-
-                        users.ForEach(user =>
-                        {
-                            repository.Save(user);
-                        });
+                        InsertMultipleUsers(repository, true);
                     }
                 });
 
@@ -505,6 +358,79 @@ namespace FamousRestaurant.Test
             {
                 SqliteConnection.Close();
             }
+        }
+
+        #endregion
+
+        #region "  Private Methods  "
+
+        /// <summary>
+        /// Method to create a list of User and insert on database
+        /// </summary>
+        /// <param name="repository">IRepository<User> with SQLite Connection</param>
+        /// <param name="forceException">If true, force an DbUpdateException insert same PK to all of Users</param>
+        private void InsertMultipleUsers(IRepository<Models.User> repository, bool forceException = false)
+        {
+            //try use same PK on all users (forcing exception if forceException = true)
+            Guid code = Guid.NewGuid();
+
+            //Arrange
+            List<Models.User> users = new List<Models.User>()
+            {
+                new Models.User()
+                {
+                    Email = "testing@gmail.com",
+                    Password = "12345678@..".Cript(),
+                    Name = "Test",
+                    Id = forceException ? code : Guid.NewGuid()
+                },
+                new Models.User()
+                {
+                    Email = "testing@hotmail.com",
+                    Password = "123456@..".Cript(),
+                    Name = "Another User",
+                    Id = forceException ? code : Guid.NewGuid()
+                },
+                new Models.User()
+                {
+                    Email = "testing2@gmail.com",
+                    Password = "T3st@..".Cript(),
+                    Name = "Test",
+                    Id = forceException ? code : Guid.NewGuid()
+                },
+                new Models.User()
+                {
+                    Email = "testing3@gmail.com",
+                    Password = "87654321@..".Cript(),
+                    Name = "Test3 User",
+                    Id = forceException ? code : Guid.NewGuid()
+                },
+            };
+
+            users.ForEach(user =>
+            {
+                //Insert user on database
+                repository.Save(user);
+            });
+        }
+
+        /// <summary>
+        /// Method to create an unique User and insert on database
+        /// </summary>
+        /// <param name="repository">IRepository<User> with SQLite Connection</param>
+        private void InsertUniqueUser(IRepository<Models.User> repository)
+        {
+            //Arrange
+            Models.User user = new Models.User()
+            {
+                Email = "testing@gmail.com",
+                Password = "12345678@..".Cript(),
+                Name = "Test User",
+                Id = Guid.NewGuid()
+            };
+
+            //Insert user on database
+            repository.Save(user);
         }
 
         #endregion

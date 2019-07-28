@@ -29,7 +29,13 @@ namespace FamousRestaurant.API.Controllers
                 Model.Token token = await _loginService.DoLogin(new Model.User(user.Email, user.Password));
 
                 if (token == null)
-                    return Unauthorized();
+                {
+                    return BadRequest(new
+                    {
+                        type = "ERROR",
+                        message = "Usuário ou senha incorretos."
+                    });
+                }
                 else
                     return Ok(token);
             }

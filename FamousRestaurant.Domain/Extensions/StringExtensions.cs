@@ -13,6 +13,9 @@ namespace FamousRestaurant.Domain.Extensions
         /// <returns>The password cript in hashbytes</returns>
         public static string Cript(this string password)
         {
+            if (string.IsNullOrEmpty(password))
+                return password;
+
             UnicodeEncoding encoding = new UnicodeEncoding();
 
             byte[] hashBytes;
