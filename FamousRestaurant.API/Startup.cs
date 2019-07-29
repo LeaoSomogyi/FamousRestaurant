@@ -1,22 +1,23 @@
-﻿using FamousRestaurant.Domain.Contracts;
+﻿using FamousRestaurant.Domain.Configurations;
+using FamousRestaurant.Domain.Contracts;
+using FamousRestaurant.Domain.Services;
+using FamousRestaurant.Infra.Contracts;
 using FamousRestaurant.Infra.DataContext;
 using FamousRestaurant.Infra.Repositories;
-using FamousRestaurant.Infra.Contracts;
 using FamousRestaurant.Infra.Units;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using System.Reflection;
-using FamousRestaurant.Domain.Configurations;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System;
-using Microsoft.AspNetCore.Authorization;
-using FamousRestaurant.Domain.Services;
 using Newtonsoft.Json.Serialization;
+using System;
+using System.Reflection;
 
 namespace FamousRestaurant.API
 {
@@ -58,7 +59,7 @@ namespace FamousRestaurant.API
                 options.UseSqlServer(Configuration["ConnectionStrings:ConnectionString"],
                     sqlOptions => sqlOptions.MigrationsAssembly(typeof(Startup)
                     .GetTypeInfo().Assembly.GetName().Name));
-            });            
+            });
 
             services.AddScoped(typeof(DbContext), typeof(ApplicationContext));
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
@@ -80,13 +81,15 @@ namespace FamousRestaurant.API
             })
             .AddJwtBearer(bearerOptions =>
             {
-                var paramsValidation = bearerOptions.TokenValidationParameters;
-                paramsValidation.IssuerSigningKey = signingConfigurations.SecurityKey;
-                paramsValidation.ValidateIssuer = false;
-                paramsValidation.ValidateAudience = false;
-                paramsValidation.ValidateIssuerSigningKey = true;
-                paramsValidation.ValidateLifetime = true;
-                paramsValidation.ClockSkew = TimeSpan.Zero;
+                bearerOptions.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    IssuerSigningKey = signingConfigurations.SecurityKey,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
             });
 
             services.AddAuthorization(auth =>
@@ -107,7 +110,7 @@ namespace FamousRestaurant.API
             else
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();                
+                app.UseHsts();
             }
 
             app.UseHttpsRedirection();
@@ -117,8 +120,8 @@ namespace FamousRestaurant.API
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<DbContext>();
-                context.Database.Migrate();                
-            }           
+                context.Database.Migrate();
+            }
         }
     }
 }
