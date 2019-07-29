@@ -33,6 +33,8 @@ namespace FamousRestaurant.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region "  Configure MVC and JSON Serialize options  "
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(opt =>
@@ -54,12 +56,20 @@ namespace FamousRestaurant.API
                     opt.SerializerSettings.TypeNameHandling = TypeNameHandling.None;
                 });
 
+            #endregion
+
+            #region "  Configure Entity Framework SQL Server  "
+
             services.AddEntityFrameworkSqlServer().AddDbContext<ApplicationContext>(options =>
             {
                 options.UseSqlServer(Configuration["ConnectionStrings:ConnectionString"],
                     sqlOptions => sqlOptions.MigrationsAssembly(typeof(Startup)
                     .GetTypeInfo().Assembly.GetName().Name));
             });
+
+            #endregion
+
+            #region "  Configure Dependency Injection  "
 
             services.AddScoped(typeof(DbContext), typeof(ApplicationContext));
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
@@ -73,6 +83,10 @@ namespace FamousRestaurant.API
 
             services.AddSingleton(tokenConfig);
             services.AddSingleton(signingConfigurations);
+
+            #endregion
+
+            #region "  Configure JWT token authorization  "
 
             services.AddAuthentication(authOptions =>
             {
@@ -98,6 +112,8 @@ namespace FamousRestaurant.API
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
                     .RequireAuthenticatedUser().Build());
             });
+
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -117,6 +133,7 @@ namespace FamousRestaurant.API
             app.UseAuthentication();
             app.UseMvc();
 
+            //Migrate database if needed
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<DbContext>();
